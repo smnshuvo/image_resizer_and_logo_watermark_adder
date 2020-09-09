@@ -1,13 +1,41 @@
-from PIL import Image
+import PIL.Image
 from file_validator import is_image
 from ImageOperation import ImageOperation
 from tkinter import *
+from tkinter import filedialog as fd
 import os
 
 # open image
 def open_image():
     # remove the current frame
     base_f.forget()
+    single_image_activity()
+
+
+
+# single image edit activity
+def single_image_activity():
+    # input image
+    i_img = fd.askopenfilename()
+    # Single Image Frame
+    simg_w = "Add Text Water Mark or logo water mark"
+    simg_f = LabelFrame(base_w, text=simg_w, width=1280, height=480)
+    simg_f.pack(padx=10, pady=10)
+    # image thumbnail
+    # making the img_view fixed my issue of not getting the image
+    global img_view
+    img_view = PhotoImage(file=i_img)
+    i_canvas = Canvas(simg_f, width=480, height=480, bg="white")
+
+    # Add images wo the canvas
+    try:
+        canvas_image = i_canvas.create_image(20,20, anchor=NW,image=img_view)
+    except Exception as e:
+        print(e)
+    i_canvas.pack()
+
+
+
 
 
 # input directory
@@ -33,20 +61,4 @@ base_o_batch_btn = Button(base_f,  text="Select Batch")
 base_o_batch_btn.pack()
 base_o_batch_btn.config(width = 30)
 base_w.mainloop()
-size_640 = (640,640)
-for img in os.listdir(i_dir):
-    img_name, img_ext = os.path.splitext(img)
-    # full directory
-    f_dir = i_dir+"/"+img
-    # create a folder if doesn't exist
-    if not os.path.exists('output'):
-        os.makedirs('output')
-    if is_image(img_ext):
-        crnt_img = Image.open(f_dir)
-        # make a water mark there
-        my_image = ImageOperation(crnt_img)
-        my_image.resize_image(size_640)
-        my_image.add_water_mark("Shuvo")
-        crnt_img.save('output/{}.png'.format(img_name))
-
 
