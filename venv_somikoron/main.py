@@ -18,13 +18,17 @@ def single_image_activity():
     # input image
     i_img = fd.askopenfilename()
     # Single Image Frame
-    simg_w = "Add Text Water Mark or logo water mark"
+    simg_w = "Preview"
     simg_f = LabelFrame(base_w, text=simg_w, width=1280, height=480)
-    simg_f.pack(padx=10, pady=10)
+    simg_f.grid(row=0,column=0)
     # image thumbnail
+    t_img = PIL.Image.open(i_img)
+    t_img_obj = ImageOperation(t_img)
+    t_img_obj.create_thumb()
     # making the img_view fixed my issue of not getting the image
     global img_view
-    img_view = PhotoImage(file=i_img)
+    # load the thumb rather than actual image
+    img_view = PhotoImage(file="temp/thumb.png")
     i_canvas = Canvas(simg_f, width=480, height=480, bg="white")
 
     # Add images wo the canvas
