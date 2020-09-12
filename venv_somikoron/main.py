@@ -71,10 +71,10 @@ def single_image_activity():
     w_text.grid(row=0, column=2)
     # water mark position
     w_positions = [
-        ("top right", 1),
-        ("top left", 2),
-        ("bottom right", 3),
-        ("bottom left", 4),
+        ("top left", 1),
+        ("bottom left", 2),
+        ("top right", 3),
+        ("bottom right", 4),
         ("center", 5)
     ]
     # Water Mark Position Text

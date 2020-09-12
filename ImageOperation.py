@@ -8,22 +8,26 @@ class ImageOperation:
         self.image = image
         # Copy the variable rather than reference
         self.backup = copy.copy(self.image)
+        global width, height
+        width, height = self.image.size
 
     @staticmethod
     def get_position(p):
+        print(width)
         return {
             1: (10, 10),
-            2: (40, 40),
-            3: (50, 50),
-            4: (100, 100),
-            5: (140, 140),
+            2: (10, height-50),
+            3: (width-150, 10),
+            4: (width-150, height-50),
+            5: (width/2-width/6, height/2),
         }.get(p, 1)
 
     def add_water_mark(self, text, position):
         pos = self.get_position(position)
         self.image = copy.copy(self.backup)
         draw = ImageDraw.Draw(self.image)
-        font = ImageFont.truetype('arial.ttf', 36)
+        # maintain a ratio
+        font = ImageFont.truetype('arial.ttf', int(height/15))
         draw.text(pos, text, font=font)
         # create the thumb again
         self.create_thumb()
@@ -32,7 +36,8 @@ class ImageOperation:
         self.image.thumbnail(size)
 
     def create_thumb(self):
-        size_480 = (480, 480)
+        # convert the ratio
+        size_480 = (480, int((height*480)/width))
         self.image.thumbnail(size_480)
         self.save_thumb()
 
