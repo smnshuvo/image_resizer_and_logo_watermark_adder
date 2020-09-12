@@ -1,14 +1,32 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
+import copy
+
 
 class ImageOperation:
     def __init__(self, image):
         self.image = image
+        # Copy the variable rather than reference
+        self.backup = copy.copy(self.image)
 
-    def add_water_mark(self, text):
+    @staticmethod
+    def get_position(p):
+        return {
+            1: (10, 10),
+            2: (40, 40),
+            3: (50, 50),
+            4: (100, 100),
+            5: (140, 140),
+        }.get(p, 1)
+
+    def add_water_mark(self, text, position):
+        pos = self.get_position(position)
+        self.image = copy.copy(self.backup)
         draw = ImageDraw.Draw(self.image)
         font = ImageFont.truetype('arial.ttf', 36)
-        draw.text((10, 10), text, font=font)
+        draw.text(pos, text, font=font)
+        # create the thumb again
+        self.create_thumb()
 
     def resize_image(self, size):
         self.image.thumbnail(size)
@@ -22,3 +40,5 @@ class ImageOperation:
         if not os.path.exists('temp'):
             os.makedirs('temp')
         self.image.save("temp/thumb.png")
+
+
